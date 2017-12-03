@@ -1,0 +1,10 @@
+language: ruby
+rvm:
+- 2.2.4
+deploy:
+  provider: rubygems
+  gem: gem-nuke
+  api_key: $RUBYGEMS_API_KEY
+  on:
+    tags: true
+    repo: sovcharenko/gem-nuke
