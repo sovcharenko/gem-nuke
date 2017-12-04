@@ -10,3 +10,5 @@ Layout/IndentHash:
     Enabled: false
 Metrics/MethodLength:
     Max: 60
+Metrics/AbcSize:
+  Enabled: false

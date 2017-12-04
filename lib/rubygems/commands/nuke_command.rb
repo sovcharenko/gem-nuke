@@ -8,28 +8,18 @@ module Gem
         super 'nuke', description
 
         add_option('-v', '--vault gemname1,gemname2', Array,
-                   "Gems in vault that'll survive this command") do |vault, options|
-          options[:vault] = vault
+                   "Gems in vault that'll survive this command.") do |vault, options|
+          options[:vault] = vault.reject(&:nil?).collect(&:strip)
         end
       end
 
-      def arguments # :nodoc:
-        ''
-      end
-
-      def usage # :nodoc:
-        program_name.to_s
-      end
-
-      def defaults_str # :nodoc:
-        ''
-      end
-
       def description # :nodoc:
-        'Nukes gems. The ones in vault will survive.'
+        'Nukes gems.'
       end
 
       def execute
+        raise OptionParser::InvalidArgument, options[:args] unless options[:args].empty?
+
         options[:vault] ||= []
 
         specs_to_uninstall = Gem::Specification.reject { |spec| options[:vault].include?(spec.name) }
@@ -40,7 +30,6 @@ module Gem
                 force: true,
                 executables: true
             }).uninstall
-            puts spec.name
           rescue StandardError
             # ignored
           end
